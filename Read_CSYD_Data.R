@@ -1,3 +1,5 @@
+library(xlsx)
+
 # Create data frame with EN, CN city names, and provinces
 trim <- function(x) gsub("^\\s+|\\s+$", "", x)  # function to remove whitespaces
 
