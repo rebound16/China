@@ -1,4 +1,4 @@
-# Build function to read variable files Data frame of EN and CN city names
+# Create data frame with EN, CN city names, and provinces
 trim <- function(x) gsub("^\\s+|\\s+$", "", x)  # function to remove whitespaces
 
 cnennames <- read.csv("citynames85.csv", header = T, sep = ";", stringsAsFactors = F)
