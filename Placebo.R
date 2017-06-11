@@ -27,7 +27,7 @@ placebo <- function(city, outcome, method, firstpreyear, lastpreyear, vars, pred
     # Prepare data 2
     foo = synth_data_outcome
     contr.citynames <- unique(foo[foo[, "cityname_e"] != cityname, "cityname_e"])
-    # Prepare data 3 (synth dataprep function)
+    # Prepare data 3 (dataprep function from Synth package)
     dataprep.out <- tryCatch(dataprep(
       foo = synth_data_outcome,
       predictors = predictorvars,
@@ -44,7 +44,7 @@ placebo <- function(city, outcome, method, firstpreyear, lastpreyear, vars, pred
       controls.identifier = contr.citynames,
       time.optimize.ssr = firstpreyear:lastpreyear,
       time.plot = firstpreyear:2010), error = function(e) NULL)
-    # Apply synth #optimxmethod = "All"
+    # Apply synth (from Synth package) #optimxmethod = "All"
     synth.out <-  tryCatch(synth(dataprep.out), error = function(e) NULL)
     gaps <- tryCatch(data.frame(dataprep.out$Y1plot - tryCatch(dataprep.out$Y0plot %*% synth.out$solution.w, error = function(e) NULL)), error = function(e) NULL)
     gaps
