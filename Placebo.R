@@ -166,3 +166,27 @@ effect.auto <- function(placebodata, trperiod, nonacities){
   effect_outcome
 }
 #effect.auto(placebo.nj_ele, 1998:2009, cities_nj_ele) # Test
+                                                                                                         
+                                                      
+                                                      
+### Post/pre-MSPE ratio (tryear: treatment year, nonacities: nooutcomena-function output 
+f.postpre.mspe <- function(placebodata, tryear, nonacities){
+  # for one city
+  f.postpre <- function(cityname, placebodata, tryear){
+    gapvariablename <- colnames(placebodata)[3]
+    pre.mspe <- mean(placebodata[placebodata$cityname_e == cityname & placebodata$year < tryear, gapvariablename]^2)
+    post.mspe <- mean(placebodata[placebodata$cityname_e == cityname & placebodata$year >= tryear, gapvariablename]^2)
+    ratio <- post.mspe / pre.mspe
+    result <- cbind(cityname, ratio)
+    result
+  }
+  
+  # for entire data set
+  MSPE_ratio <- as.data.frame(t(sapply(nonacities$cityname_e, f.postpre, placebodata, preperiod)), stringsAsFactors = F)
+  colnames(MSPE_ratio) <- c("cityname_e", "PostpreMSPEratio")
+  MSPE_ratio$PostpreMSPEratio <- as.numeric(as.character(MSPE_ratio$PostpreMSPEratio))
+  MSPE_ratio <- MSPE_ratio[!is.na(MSPE_ratio$PostpreMSPEratio), ]
+  MSPE_ratio <- MSPE_ratio[order(-MSPE_ratio$PostpreMSPEratio), ]
+  MSPE_ratio
+}
+#f.postpre.mspe(placebo.wz_ind, 1987, cities_wz_ind) # Test
